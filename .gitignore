@@ -1,0 +1,17 @@
+﻿################################################################################
+# 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
+################################################################################
+
+/App/bin
+/App/obj
+/Common/bin
+/Common/obj
+/Dao/bin
+/Dao/obj
+/Model/bin
+/Model/obj
+/Service/bin
+/Service/obj
+/warehousemgr/.vs
+/warehousemgr/bin
+/warehousemgr/obj
