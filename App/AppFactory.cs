@@ -1,4 +1,5 @@
-﻿using App.Implement.User;
+﻿using App.Implement.Procurement;
+using App.Implement.User;
 using App.Interface;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace App
         {
             if (typeof(T) == typeof(IUserApp))
                 return new UserAppImpl() as T;
+            if (typeof(T) == typeof(IProcurementApp))
+                return new ProcurementAppImpl() as T;
 
             return null;
         }

@@ -11,7 +11,7 @@ namespace Common.Extern
         /// <returns></returns>
         public static string GetToken(this HttpRequest _req)
         {
-            string token = _req.Cookies["x-access-s"];
+            string token = _req.Headers["x-access-s"];
             if (string.IsNullOrWhiteSpace(token))
             {
                 token = _req.Cookies["x-access-s"];

@@ -36,7 +36,8 @@ namespace Dao.Procurement
                     remark = item.remark,
                 });
             }
-            return await db.ExecAsync(sql, list) > 0;
+
+            return await db.ExecAsync(sql, list) == product_list.Count;
         }
     }
 }

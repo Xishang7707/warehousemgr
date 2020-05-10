@@ -213,6 +213,7 @@ namespace Service.Implement.User
             bool password_flag = VerifyCommon.VerifyPassword(user.id, user.salt, user.password, inData.data.password);
             if (!password_flag)
             {
+                db.Close();
                 result.msg = "用户名或密码错误";
                 return result;
             }

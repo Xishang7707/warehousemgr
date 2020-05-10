@@ -9,7 +9,7 @@ function get({ url, data, async = true, done, err }) {
         url: url,
         data: data,
         headers: {
-            'token': token(),
+            'x-access-s': token(),
             'lang': lang()
         },
         async: async,
@@ -34,7 +34,7 @@ function post({ url, data, async = true, done, err }) {
     $.ajax({
         url: url,
         headers: {
-            'token': token(),
+            'x-access-s': token(),
             'lang': lang()
         },
         contentType: 'application/json',

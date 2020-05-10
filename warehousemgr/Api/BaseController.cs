@@ -27,7 +27,7 @@ namespace warehousemgr.Api
             };
         }
 
-        protected async Task<In<T>> Package<T>(T data)
+        protected async Task<In<T>> Package<T>(T data) where T : class, new()
         {
             return new In<T>
             {

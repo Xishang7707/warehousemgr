@@ -46,7 +46,6 @@ namespace warehousemgr.Api
         /// 获取用户信息
         /// </summary>
         /// <returns></returns>
-        [AllowAnonymous]
         [HttpGet("getuserinfo")]
         public async Task<IActionResult> GetUserInfo()
         {

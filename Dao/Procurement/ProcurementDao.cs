@@ -44,5 +44,17 @@ namespace Dao.Procurement
             string sql = @"SELECT id FROM t_procurement WHERE order_sn=@order_sn;";
             return await db.QueryAsync<int>(sql, new { order_sn = order_sn }) > 0;
         }
+
+        /// <summary>
+        /// 获取采购单
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="position_arr"></param>
+        /// <returns></returns>
+        public static async Task<List<t_procurement>> GetList(DBHelper db, int[] position_arr)
+        {
+            string sql = @"SELECT * FROM t_procurement WHERE position_id in @position_arr";
+            return await db.QueryListAsync<t_procurement>(sql, new { position_arr = position_arr });
+        }
     }
 }

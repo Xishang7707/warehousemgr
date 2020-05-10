@@ -17,7 +17,7 @@ $(function () {
 
     var w = get_top_window();
     get({
-        url: api_host + 'user/getuserinfo',
+        url: '../api/user/getuserinfo',
         success: o => {
             if (o['status'] == 401) {
                 w.location.href = 'login';

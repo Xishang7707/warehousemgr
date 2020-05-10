@@ -1,4 +1,8 @@
 ﻿$(function () {
+    var frame_flag = getQuery('frame');
+    if (!frame_flag) {
+        $('#btn-submit').show();
+    }
     layui.use(['form'], () => {
 
     });
@@ -11,7 +15,8 @@
         }
     });
     add_product();
-    $('#btn-user-add').click(add_product);
+    $('#btn-product-add').click(add_product);
+    $('#btn-submit').click(() => { apply_order(); });
 });
 
 function add_product() {
@@ -72,4 +77,53 @@ function add_product() {
 function remove_product(e) {
 
     $(e.target).parents('.apply-product-item').remove();
+}
+
+function get_data() {
+    var wapper = $('#procurement-add-form');
+    var product_list = new Array();
+    var dom_list = wapper.find('.apply-product-item');
+    for (var i = 0; i < dom_list.length; i++) {
+        var t = dom_list.eq(i);
+        var item = {
+            product_name: t.find('input[name=product_name]').val(),
+            util_name: t.find('input[name=util_name]').val(),
+            package_size: t.find('input[name=package_size]').val(),
+            quantity: t.find('input[name=quantity]').val(),
+            remark: t.find('input[name=remark]').val(),
+        };
+
+        product_list.push(item);
+    }
+    return product_list;
+}
+
+function apply_order(func) {
+    var btn = $('#btn-submit');
+    if (btn.data('is_submit')) {
+        return;
+    }
+    btn.data('is_submit', true);
+    var load_index = layer.load(2, { shade: [0.4, '#000'] });
+    post({
+        url: '../api/procurement/procurementapply',
+        data: { product_list: get_data() },
+        done: o => {
+            layer.close(load_index);
+            if (func) {
+                return func(o);
+            }
+            layer.msg(o.msg);
+            setTimeout(() => {
+                $('#procurement-add-form').html();
+                add_product();
+                btn.data('is_submit', false);
+            }, 2000);
+        },
+        err: o => {
+            layer.close(load_index);
+            btn.data('is_submit', false);
+            layer.msg(o.msg);
+        }
+    })
 }

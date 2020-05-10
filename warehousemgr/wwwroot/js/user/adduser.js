@@ -1,6 +1,6 @@
 ﻿$(function () {
-    var frame_flag = getQuery('frame');
     $('#btn-user-add').click(() => { add_user(); });
+    var frame_flag = getQuery('frame');
     if (!frame_flag) {
         $('#btn-user-add').show();
     }
@@ -15,7 +15,7 @@ function add_user(func) {
         return;
     }
     btn.data('is_submit', true);
-    var load_index = layer.load(2, { shade: [0.4, '#0000'] });
+    var load_index = layer.load(2, { shade: [0.4, '#000'] });
     post({
         url: '../api/user/adduser',
         data: get_data(),

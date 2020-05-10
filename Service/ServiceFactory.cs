@@ -1,4 +1,5 @@
-﻿using Service.Implement.User;
+﻿using Service.Implement.Procurement;
+using Service.Implement.User;
 using Service.Interface;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace Service
         {
             if (typeof(T) == typeof(IUserService))
                 return new UserServiceImpl() as T;
+            if (typeof(T) == typeof(IProcurementService))
+                return new ProcurementServiceImpl() as T;
 
             return null;
         }

@@ -13,7 +13,7 @@ function open_add_procurement() {
         yes: function (index, layero) {
             var body = layer.getChildFrame('body', index);
             var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
-            iframeWin.add_user(o => {
+            iframeWin.apply_order(o => {
                 var w = get_top_window();
                 w.layer.msg(o.msg);
                 layer.close(index);

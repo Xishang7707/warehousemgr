@@ -1,8 +1,10 @@
 ﻿using Common;
 using Dao.Procurement;
+using Model.Db;
 using Model.In;
 using Model.In.Procurement;
 using Model.Out;
+using Model.Out.Procurement;
 using Service.Interface;
 using StackExchange.Redis;
 using System;
@@ -73,7 +75,7 @@ namespace Service.Implement.Procurement
             do
             {
                 order_sn = MakeCommon.MakeOrder("IN");
-            } while (!await ProcurementDao.IsExist(db, order_sn));
+            } while (await ProcurementDao.IsExist(db, order_sn));
 
             try
             {
@@ -104,6 +106,32 @@ namespace Service.Implement.Procurement
                 db.Rollback();
                 result.msg = e.Message;
             }
+            return result;
+        }
+
+        public async Task<Result> GetOrderList(In inData)
+        {
+            DBHelper db = new DBHelper();
+            List<int> position_list = await PositionDao.GetChildId(db, inData.user.position_id);
+            position_list.Add(inData.user.position_id);
+            position_list = position_list.Distinct().ToList();
+            List<t_procurement> order_list = await ProcurementDao.GetList(db, position_list.ToArray());
+            List<OrderItemResult> order_result_list = new List<OrderItemResult>();
+            foreach (var item in order_list)
+            {
+                order_result_list.Add(new OrderItemResult
+                {
+                    add_time = item.add_time.ToString("yyyy-MM-dd HH:mm:ss"),
+                    department_name = await DepartmentDao.GetDepartmentName(db, item.department_id),
+                    position_name = await Dao.User.PositionDao.GetPositionName(db, item.position_id),
+                    name = await UserDao.GetUserRealName(db, item.id),
+                    order_sn = item.order_sn,
+                    remark = item.remark,
+                    status = item.status
+                });
+            }
+
+            Result<List<OrderItemResult>> result = new Result<List<OrderItemResult>> { result = true, msg = "OK", data = order_result_list };
             return result;
         }
     }

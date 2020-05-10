@@ -28,7 +28,7 @@ namespace Common
         public static async Task<T> HttpGet<T>(string _url, string _p = null, string _token = null, string _lang = null)
         {
             HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("token", _token);
+            client.DefaultRequestHeaders.Add("x-access-s", _token);
             client.DefaultRequestHeaders.Add("lang", _lang);
 
             HttpResponseMessage res = await client.GetAsync($"{_url}?{_p}");
@@ -41,7 +41,7 @@ namespace Common
         {
             HttpWebRequest req = WebRequest.Create(_url) as HttpWebRequest;
             req.Method = "POST";
-            req.Headers.Add("token", _token);
+            req.Headers.Add("x-access-s", _token);
             req.Headers.Add("lang", _lang);
             req.ContentType = "application/json";
 

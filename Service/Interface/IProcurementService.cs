@@ -19,5 +19,12 @@ namespace Service.Interface
         /// <param name="inData"></param>
         /// <returns></returns>
         Task<Result> AddProcurement(In<ApplyOrderIn> inData);
+
+        /// <summary>
+        /// 获取采购单 仅用户可操作或已操作的
+        /// </summary>
+        /// <param name="inData"></param>
+        /// <returns></returns>
+        Task<Result> GetOrderList(In inData);
     }
 }
