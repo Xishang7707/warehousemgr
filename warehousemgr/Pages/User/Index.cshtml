@@ -1,0 +1,36 @@
+﻿@page
+@model warehousemgr.Pages.User.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<script src="~/js/user/index.js"></script>
+<body style="padding:3px;">
+    <div class="layui-card">
+        <div class="layui-card-header">
+            <div class="layui-btn-group">
+                <button type="button" class="layui-btn" id="open-user-add">添加用户</button>
+            </div>
+        </div>
+        <div class="layui-card-body" id="user-body">
+            <table class="layui-table">
+                <colgroup>
+                    <col>
+                    <col>
+                    <col>
+                    <col>
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th style='text-align:center'>用户信息</th>
+                        <th style='text-align:center'>所属信息</th>
+                        <th style='text-align:center'>时间</th>
+                        <th style='text-align:center'>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="user-list">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>

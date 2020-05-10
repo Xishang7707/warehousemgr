@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,7 +13,7 @@ namespace Common
 {
     public class DBHelper
     {
-        private const string conn_str = @"Database=warehousemgr;Data Source=8.129.167.212;User Id=sa;Password=123456";
+        private const string conn_str = @"Database=warehousemgr;Data Source=8.129.167.212;User Id=xis;Password=mysql@2020;charset=utf8;";
         private IDbConnection conn;
         private IDbTransaction tran;
         public DBHelper()
@@ -27,7 +28,7 @@ namespace Common
         {
             if (conn == null || conn.State != System.Data.ConnectionState.Open && conn.State != System.Data.ConnectionState.Executing && conn.State != System.Data.ConnectionState.Fetching)
             {
-                conn = new SqlConnection(conn_str);
+                conn = new MySqlConnection(conn_str);
                 conn.Open();
             }
         }
@@ -61,6 +62,7 @@ namespace Common
         public void Commit()
         {
             tran.Commit();
+            Close();
             tran = null;
         }
 
@@ -72,6 +74,7 @@ namespace Common
         {
             if (tran != null)
                 tran.Rollback();
+            Close();
             tran = null;
         }
 

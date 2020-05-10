@@ -1,18 +1,14 @@
 ﻿using Model.In;
 using Model.In.User;
 using Model.Out;
-using Model.Out.User;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Service.Interface
+namespace App.Interface
 {
-    /// <summary>
-    /// 用户
-    /// </summary>
-    public interface IUserService : IService
+    public interface IUserApp : IApp
     {
         /// <summary>
         /// 登录
@@ -27,12 +23,5 @@ namespace Service.Interface
         /// <param name="inData"></param>
         /// <returns></returns>
         Task<Result> AddUser(In<AddUserIn> inData);
-
-        /// <summary>
-        /// 获取登录用户
-        /// </summary>
-        /// <param name="token">token</param>
-        /// <returns></returns>
-        Task<LoginResult> GetLoginUser(string token);
     }
 }
