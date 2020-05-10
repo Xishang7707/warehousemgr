@@ -61,5 +61,15 @@ namespace Common
             string guid = MakeGUID("D");
             return guid;
         }
+
+        /// <summary>
+        /// 生成订单号
+        /// </summary>
+        /// <param name="perfix">前缀</param>
+        /// <returns></returns>
+        public static string MakeOrder(string perfix)
+        {
+            return perfix + DateTime.Now.ToString("yyyyMMddHHmmssms") + (new Random((int)DateTime.Now.Ticks)).Next(1000, 9999);
+        }
     }
 }

@@ -45,7 +45,7 @@ namespace Dao.User
         public static async Task<bool> UpdatePassword(DBHelper db, int id, string password)
         {
             string salt = MakeCommon.MakeSalt(id.ToString());
-            string p = MakeCommon.MakeSalt(salt + id + password + id + salt);
+            string p = MakeCommon.MakeMD5(salt + id + password + id + salt);
             string pwd = ConcealCommon.EncryptDES(salt + p + salt);
 
             string sql = @"UPDATE t_user set `password`=@password, `salt`=@salt WHERE `id`=@id";
@@ -60,8 +60,8 @@ namespace Dao.User
         /// <returns></returns>
         public static async Task<bool> IsExist(DBHelper db, string user_name)
         {
-            string sql = @"SELECT id FROM t_user WHERE `user_name`=@user_name AND `state`=@state AND `status`=@status";
-            return await db.QueryAsync<int>(sql, new { user_name = user_name, status = (int)EStatus.Normal, state = (int)EState.Normal }) > 0;
+            string sql = @"SELECT id FROM t_user WHERE `user_name`=@user_name";
+            return await db.QueryAsync<int>(sql, new { user_name = user_name }) > 0;
         }
 
         /// <summary>

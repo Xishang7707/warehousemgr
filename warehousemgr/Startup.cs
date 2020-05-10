@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using warehousemgr.Middleware;
 
 namespace warehousemgr
 {
@@ -42,6 +43,8 @@ namespace warehousemgr
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<AuthMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

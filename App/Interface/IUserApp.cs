@@ -1,6 +1,7 @@
 ﻿using Model.In;
 using Model.In.User;
 using Model.Out;
+using Model.Out.User;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,5 +24,12 @@ namespace App.Interface
         /// <param name="inData"></param>
         /// <returns></returns>
         Task<Result> AddUser(In<AddUserIn> inData);
+
+        /// <summary>
+        /// 获取登录用户
+        /// </summary>
+        /// <param name="token">token</param>
+        /// <returns></returns>
+        Task<LoginResult> GetLoginUser(string token);
     }
 }

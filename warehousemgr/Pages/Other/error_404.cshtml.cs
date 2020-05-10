@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace warehousemgr.Pages
+namespace warehousemgr.Other
 {
     [AllowAnonymous]
-    public class LoginModel : PageModel
+    public class error_404Model : PageModel
     {
         public void OnGet()
         {

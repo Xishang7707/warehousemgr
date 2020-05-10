@@ -2,6 +2,7 @@
 using Model.In;
 using Model.In.User;
 using Model.Out;
+using Model.Out.User;
 using Service;
 using Service.Interface;
 using System;
@@ -17,6 +18,11 @@ namespace App.Implement.User
         public async Task<Result> AddUser(In<AddUserIn> inData)
         {
             return await userApp.AddUser(inData);
+        }
+
+        public async Task<LoginResult> GetLoginUser(string token)
+        {
+            return await userApp.GetLoginUser(token);
         }
 
         public async Task<Result> Login(In<LoginIn> inData)

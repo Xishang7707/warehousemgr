@@ -35,7 +35,7 @@ namespace Common
 
         private static string MakeConnStr()
         {
-            return string.Format($@"8.129.167.212,defaultDatabase=3,password=123456");
+            return string.Format($@"8.129.167.212,defaultDatabase=3,password=redis@2020");
         }
     }
 

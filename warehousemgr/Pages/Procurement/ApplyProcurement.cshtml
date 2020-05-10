@@ -1,0 +1,36 @@
+﻿@page
+@model warehousemgr.Pages.Procurement.ApplyProcurementModel
+@{
+    ViewData["Title"] = "采购申请";
+}
+
+<script src="~/js/procurement/applyprocurement.js"></script>
+<body style="padding:3px;">
+    <div class="layui-card">
+        <div class="layui-card-header">
+            <div class="layui-row">
+                <div class="layui-col-sm4">
+                    姓名：<span id="name"></span>
+                </div>
+                <div class="layui-col-sm4">
+                    部门：<span id="department_name"></span>
+                </div>
+                <div class="layui-col-sm4">
+                    职位：<span id="position_name"></span>
+                </div>
+            </div>
+        </div>
+        <div class="layui-card-body">
+            <form class="layui-form" action="" id="procurement-add-form">
+            </form>
+        </div>
+        <div>
+            <div style="text-align: center;">
+                <div class="layui-btn-container">
+                    <button type="button" class="layui-btn" id="btn-user-add">添加物品</button>
+                    <button type="button" class="layui-btn" style="display:none;" id="btn-submit">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

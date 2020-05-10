@@ -20,12 +20,25 @@ namespace Model.Out
         /// </summary>
         public string msg { get; set; }
 
+        /// <summary>
+        /// 状态码
+        /// </summary>
+        public int status { get; set; }
+
         public async Task ExecuteResultAsync(ActionContext context)
         {
             var resp = context.HttpContext.Response;
-            resp.StatusCode = result ? 200 : 403;
+            resp.StatusCode = status != 0 ? status : result ? 200 : 403;
             resp.ContentType = "application/json";
             await resp.WriteAsync(JsonConvert.SerializeObject(this));
         }
+    }
+
+    public class Result<T> : Result
+    {
+        /// <summary>
+        /// 数据
+        /// </summary>
+        public T data { get; set; }
     }
 }

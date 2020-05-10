@@ -1,6 +1,6 @@
 ﻿$(function () {
     var frame_flag = getQuery('frame');
-    $('#btn-user-add').click(add_user);
+    $('#btn-user-add').click(() => { add_user(); });
     if (!frame_flag) {
         $('#btn-user-add').show();
     }

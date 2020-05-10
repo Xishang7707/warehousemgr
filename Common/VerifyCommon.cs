@@ -41,7 +41,7 @@ namespace Common
         /// <returns></returns>
         public static bool VerifyPassword(int id, string salt, string pwd, string pwd2)
         {
-            string p = MakeCommon.MakeSalt(salt + id + pwd2 + id + salt);
+            string p = MakeCommon.MakeMD5(salt + id + pwd2 + id + salt);
             string enc_pwd = ConcealCommon.EncryptDES(salt + p + salt);
             return enc_pwd == pwd;
         }

@@ -18,9 +18,10 @@ function get({ url, data, async = true, done, err }) {
             done && done(o);
         },
         error: o => {
+            console.log(o);
             if (o.responseJSON)
                 err && err(o.responseJSON);
-            else err && err({ status: false, msg: '服务器请求异常' });
+            else err && err({ status: o.status, msg: '服务器请求异常' });
         }
     })
 }
@@ -45,9 +46,10 @@ function post({ url, data, async = true, done, err }) {
             done && done(o);
         },
         error: o => {
+            console.log(o);
             if (o.responseJSON)
                 err && err(o.responseJSON);
-            else err && err({ status: false, msg: '服务器请求异常' });
+            else err && err({ status: o.status, msg: '服务器请求异常' });
         }
     })
 }
@@ -90,14 +92,13 @@ var _cache_data = {};
  * 登出
  * */
 function login_out_tologin() {
-    var w = get_top_window();
     post({
         url: api_host + 'user/loginout',
         success: o => {
-            w.location.href = 'login';
+            to_login();
         },
         e: o => {
-            w.location.href = 'login';
+            to_login();
         }
     });
     token('');
@@ -115,4 +116,8 @@ function getQuery(variable) {
 
 function get_selected(sor) {
     return $(sor).next('.layui-form-select').find('dl dd.layui-this').attr('lay-value');
+}
+
+function to_login() {
+    get_top_window().location.href = 'login';
 }

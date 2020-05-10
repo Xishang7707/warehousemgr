@@ -54,15 +54,12 @@ function login(w, btn) {
         },
         done: o => {
             layer.msg(o['msg']);
-            if (o['status'] != 200) {
-                return;
-            }
             token(o['data']['token']);
             setInterval(() => {
                 w.location.href = 'index';
             }, 2000);
         }, err: o => {
-            layer.msg("网络繁忙 请稍后再试！");
+            layer.msg(o.msg);
         }
     })
 }

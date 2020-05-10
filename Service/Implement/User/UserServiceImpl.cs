@@ -219,22 +219,35 @@ namespace Service.Implement.User
 
             LoginResult loginResult = new LoginResult
             {
+                user_id = user.id,
                 department_name = await DepartmentDao.GetDepartmentName(db, user.department_id),
                 position_name = await PositionDao.GetPositionName(db, user.position_id),
+                department_id = user.department_id,
+                position_id = user.position_id,
                 name = user.real_name,
                 token = ConcealCommon.EncryptDES(user.id + DateTime.Now.ToString("yyy-MM-dd HH:mm:ss:ms")),
                 user_name = user.user_name,
-                result = true,
-                msg = "登录成功"
+
             };
             db.Close();
 
             await RedisHelper.Instance.SetStringKeyAsync($"user-multi-token:{loginResult.token}", loginResult, TimeSpan.FromHours(4));
-            return loginResult;
+
+            Result<LoginResult> result1 = new Result<LoginResult>
+            {
+                data = loginResult,
+                result = true,
+                msg = "登录成功"
+            };
+            return result1;
         }
 
         public async Task<LoginResult> GetLoginUser(string token)
         {
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return null;
+            }
             return await RedisHelper.Instance.GetStringKeyAsync<LoginResult>($"user-multi-token:{token}");
         }
     }

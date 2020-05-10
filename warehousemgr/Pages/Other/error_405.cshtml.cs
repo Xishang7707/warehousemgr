@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace warehousemgr.Pages
+namespace warehousemgr.Other
 {
+    /// <summary>
+    /// 未授权页面
+    /// </summary>
     [AllowAnonymous]
-    public class LoginModel : PageModel
+    public class error_405Model : PageModel
     {
         public void OnGet()
         {
