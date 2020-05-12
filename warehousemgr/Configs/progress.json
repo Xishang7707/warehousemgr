@@ -1,0 +1,63 @@
+{
+  //采购入库
+  "procurement": {
+    //仓库
+    "depart-2": [
+      {
+        "id": 5,
+        "act": "apply"
+      },
+      {
+        "id": 4,
+        "act": "apply"
+      },
+      {
+        "id": 2,
+        "act": "apply"
+      },
+      {
+        "id": 6,
+        "act": "apply"
+      },
+      {
+        "id": 6,
+        "act": "procurement"
+      },
+      {
+        "id": 5,
+        "act": "apply"
+      }
+    ], //员工 主管 副总 采购 采购(填写采购物品) 仓库
+    //技术部
+    "depart-4": [
+      {
+        "id": 9,
+        "act": "apply"
+      },
+      {
+        "id": 8,
+        "act": "apply"
+      },
+      {
+        "id": 4,
+        "act": "apply"
+      },
+      {
+        "id": 2,
+        "act": "apply"
+      },
+      {
+        "id": 6,
+        "act": "apply"
+      },
+      {
+        "id": 6,
+        "act": "procurement"
+      },
+      {
+        "id": 4,
+        "act": "apply"
+      }
+    ] //员工 主管 仓库 副总 采购 采购(填写采购物品) 仓库(核对)
+  }
+}

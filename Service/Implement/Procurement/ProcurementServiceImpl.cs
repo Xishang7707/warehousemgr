@@ -1,10 +1,13 @@
 ﻿using Common;
 using Dao.Procurement;
 using Model.Db;
+using Model.Db.Enum;
 using Model.In;
 using Model.In.Procurement;
 using Model.Out;
 using Model.Out.Procurement;
+using Model.Progress;
+using Model.Progress.Enum;
 using Service.Interface;
 using StackExchange.Redis;
 using System;
@@ -132,6 +135,156 @@ namespace Service.Implement.Procurement
             }
 
             Result<List<OrderItemResult>> result = new Result<List<OrderItemResult>> { result = true, msg = "OK", data = order_result_list };
+            return result;
+        }
+
+        /// <summary>
+        /// 验证审核的订单
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        private async Task<Result> VerifyAuditOrder(In<AuditOrder> inData)
+        {
+            var data = inData.data;
+            Result result = new Result();
+            if (data == null)
+            {
+                result.msg = "参数错误";
+                return result;
+            }
+            if (string.IsNullOrWhiteSpace(data.order_sn?.Trim()))
+            {
+                result.msg = "订单不存在";
+                return result;
+            }
+            data.order_sn = data.order_sn.Trim();
+            DBHelper db = new DBHelper();
+            t_procurement order = await ProcurementDao.GetOrder(db, data.order_sn);
+            db.Close();
+            if (order == null)
+            {
+                result.msg = "订单不存在";
+                return result;
+            }
+            int pass_step = ProcurementConfig.PassStep(order.department_id, order.position_id);
+            ProcurementItem step = ProcurementConfig.CurrentStep(order.department_id, pass_step, order.audit_step);
+            if (step == null || step.act != EProcurementAction.Apply || inData.user.position_id != step.id)
+            {
+                result.msg = "无权审批改订单";
+                return result;
+            }
+            if (string.IsNullOrWhiteSpace(data.flag?.Trim()) || !int.TryParse(data.flag, out int audit_flag) || !Enum.IsDefined(typeof(EAuditFlag), audit_flag))
+            {
+                result.msg = "审批状态错误";
+                return result;
+            }
+            data.flag = data.flag.Trim();
+
+            if (audit_flag == (int)EAuditFlag.Reject && string.IsNullOrWhiteSpace(data.remark?.Trim()))
+            {
+                result.msg = "请填写拒绝理由";
+                return result;
+            }
+            data.remark = data.remark?.Trim();
+            if (data.remark?.Length > 100)
+            {
+                result.msg = "拒绝理由最多100个字符";
+                return result;
+            }
+
+            result.result = true;
+            return result;
+        }
+        public async Task<Result> AuditOrder(In<AuditOrder> inData)
+        {
+            Result result = await VerifyAuditOrder(inData);
+            if (!result.result)
+            {
+                return result;
+            }
+
+            DBHelper db = new DBHelper();
+            try
+            {
+                db.BeginTransaction();
+                //最后一步 [入库]
+
+                //普通
+                if (int.Parse(inData.data.flag) == (int)EAuditFlag.Agree)
+                {
+                    result = await AuditAgree(db, inData);
+                }
+                //拒绝
+                else if (int.Parse(inData.data.flag) == (int)EAuditFlag.Reject)
+                {
+                    result = await AuditReject(db, inData);
+                }
+
+                if (!result.result)
+                {
+                    db.Rollback();
+                    return result;
+                }
+
+                db.Commit();
+                result.msg = "审批成功";
+            }
+            catch (Exception e)
+            {
+                db.Rollback();
+                result.msg = "审批失败";
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 同意审批
+        /// </summary>
+        /// <param name="inData"></param>
+        /// <returns></returns>
+        private async Task<Result> AuditAgree(DBHelper db, In<AuditOrder> inData)
+        {
+            Result result = new Result();
+            t_procurement order = await ProcurementDao.GetOrder(db, inData.data.order_sn);
+            bool update_order_flag = await ProcurementDao.AuditAgreeOrder(db, inData.data.order_sn, order.audit_step + 1);
+            if (!update_order_flag)
+            {
+                result.msg = "审批失败[1]";
+                return result;
+            }
+            bool add_audit_log_flag = await AuditLogDao.AddAuditLog(db, order.order_sn, inData.user.user_id, EAuditFlag.Agree, inData.user.position_id, order.audit_step, inData.data.remark);
+            if (!add_audit_log_flag)
+            {
+                result.msg = "审批失败[2]";
+                return result;
+            }
+            result.result = true;
+            return result;
+        }
+
+        /// <summary>
+        /// 拒绝审批
+        /// </summary>
+        /// <param name="inData"></param>
+        /// <returns></returns>
+        private async Task<Result> AuditReject(DBHelper db, In<AuditOrder> inData)
+        {
+            Result result = new Result();
+            t_procurement order = await ProcurementDao.GetOrder(db, inData.data.order_sn);
+            bool update_order_flag = await ProcurementDao.AuditRejectOrder(db, inData.data.order_sn, order.audit_step + 1);
+            if (!update_order_flag)
+            {
+                result.msg = "审批失败[1]";
+                return result;
+            }
+            bool add_audit_log_flag = await AuditLogDao.AddAuditLog(db, order.order_sn, inData.user.user_id, EAuditFlag.Reject, inData.user.position_id, order.audit_step, inData.data.remark);
+            if (!add_audit_log_flag)
+            {
+                result.msg = "审批失败[2]";
+                return result;
+            }
+            result.result = true;
             return result;
         }
     }

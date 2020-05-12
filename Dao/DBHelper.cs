@@ -13,7 +13,7 @@ namespace Common
 {
     public class DBHelper
     {
-        private const string conn_str = @"Database=warehousemgr;Data Source=8.129.167.212;User Id=xis;Password=mysql@2020;charset=utf8;";
+        private const string conn_str = @"Database=warehousemgr;Data Source=192.168.99.101;User Id=xis;Password=mysql@2020;charset=utf8;";
         private IDbConnection conn;
         private IDbTransaction tran;
         public DBHelper()

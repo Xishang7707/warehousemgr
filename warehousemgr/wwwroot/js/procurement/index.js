@@ -1,5 +1,6 @@
 ﻿$(function () {
     $('#open-procurement-add').click(open_add_procurement);
+    get_orders();
 })
 
 
@@ -21,4 +22,29 @@ function open_add_procurement() {
             });
         }
     });
+}
+
+function get_orders() {
+    get({
+        url: '../api/procurement/getorders',
+        done: o => {
+
+        },
+        err: o => {
+            layer.msg(o.msg);
+        }
+    });
+}
+
+function render_order_table(o) {
+    for (var i = 0; i < o.length; i++) {
+        var item = `
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+`;
+    }
 }

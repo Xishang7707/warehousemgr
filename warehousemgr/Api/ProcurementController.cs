@@ -26,5 +26,26 @@ namespace warehousemgr.Api
         {
             return await procurementApp.AddProcurement(await Package(model));
         }
+
+        /// <summary>
+        /// 采购单
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("getorders")]
+        public async Task<IActionResult> GetOrders()
+        {
+            return await procurementApp.GetOrderList(await Package());
+        }
+
+        /// <summary>
+        /// 审批
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost("auditorder")]
+        public async Task<IActionResult> AuditOrder([FromBody]AuditOrder model)
+        {
+            return await procurementApp.AuditOrder(await Package(model));
+        }
     }
 }

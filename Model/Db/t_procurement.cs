@@ -32,6 +32,11 @@ namespace Model.Db
         public int department_id { get; set; }
 
         /// <summary>
+        /// 审批步骤
+        /// </summary>
+        public int audit_step { get; set; }
+
+        /// <summary>
         /// 说明
         /// </summary>
         public string remark { get; set; }
@@ -40,6 +45,11 @@ namespace Model.Db
         /// 订单状态
         /// </summary>
         public int status { get; set; }
+
+        /// <summary>
+        /// 审批状态
+        /// </summary>
+        public int audit_status { get; set; }
 
         /// <summary>
         /// 添加时间

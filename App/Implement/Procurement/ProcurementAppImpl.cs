@@ -15,5 +15,15 @@ namespace App.Implement.Procurement
         {
             return await procurementService.AddProcurement(inData);
         }
+
+        public async Task<Result> AuditOrder(In<AuditOrder> inData)
+        {
+            return await procurementService.AuditOrder(inData);
+        }
+
+        public async Task<Result> GetOrderList(In inData)
+        {
+            return await procurementService.GetOrderList(inData);
+        }
     }
 }

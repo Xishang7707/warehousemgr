@@ -7,7 +7,7 @@ namespace Model.Db
     /// <summary>
     /// 审批记录
     /// </summary>
-    public class t_apply_log
+    public class t_audit_log
     {
         public int id { get; set; }
 
@@ -24,7 +24,12 @@ namespace Model.Db
         /// <summary>
         /// 审批状态
         /// </summary>
-        public int apply_status { get; set; }
+        public int audit_status { get; set; }
+
+        /// <summary>
+        /// 审批步骤
+        /// </summary>
+        public int audit_step { get; set; }
 
         /// <summary>
         /// 职位id

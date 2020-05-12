@@ -26,5 +26,12 @@ namespace Service.Interface
         /// <param name="inData"></param>
         /// <returns></returns>
         Task<Result> GetOrderList(In inData);
+
+        /// <summary>
+        /// 审批
+        /// </summary>
+        /// <param name="inData"></param>
+        /// <returns></returns>
+        Task<Result> AuditOrder(In<AuditOrder> inData);
     }
 }
